@@ -9,9 +9,10 @@
                         http://www.springframework.org/schema/context/spring-context-3.1.xsd    
                         http://www.springframework.org/schema/mvc    
                         http://www.springframework.org/schema/mvc/spring-mvc-4.0.xsd">
+	<!-- 约定大于配置 -->
 	<!-- 自动扫描 -->
-	<context:component-scan base-package="com.mybatis.spring" />
-	<!-- 引入配置文件 -->
+	<context:component-scan base-package="com.mybatis.spring.*" />
+	<!-- 1.数据库连接池 -->
 	<bean id="propertyConfigurer"
 		class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer">
 		<property name="location" value="classpath:jdbc.properties" />
@@ -35,16 +36,23 @@
 		<property name="maxWait" value="${maxWait}"></property>
 	</bean>
 
-	<!-- spring和MyBatis完美整合，不需要mybatis的配置映射文件 -->
+	<!-- 2.配置sqlsession对象，不需要mybatis的配置映射文件 -->
 	<bean id="sqlSessionFactory" class="org.mybatis.spring.SqlSessionFactoryBean">
+		<!-- 注入数据库连接池 -->
 		<property name="dataSource" ref="dataSource" />
-		<!-- 自动扫描mapping.xml文件 -->
-		<property name="mapperLocations" value="classpath:com/mybatis/spring/mapping/*.xml"></property>
+		<!-- 配置MyBatis全局配置文件：mybatis-config.xml -->
+		<property name="configLocation" value="classpath:mybatis-config.xml" />
+		<!-- 扫描sql配置文件：mapper需要的xml文件 -->
+		<property name="mapperLocations" value="classpath:com/mybatis/spring/mapping/*.xml" />
+		<!-- 自动扫描数据库实体pojo文件 -->
+		<property name="typeAliasesPackage" value="com.mybatis.spring.pojo" />
 	</bean>
 
-	<!-- DAO接口所在包名，Spring会自动查找其下的类 -->
+	<!-- 4：DAO接口所在包名，Spring会自动查找其下的类 ，动态实现Dao接口注入到Spring容器中 -->
 	<bean class="org.mybatis.spring.mapper.MapperScannerConfigurer">
+		<!-- 给出需要扫描的Dao接口包 -->
 		<property name="basePackage" value="com.mybatis.spring.dao" />
+		<!-- 注入sqlSessionFactory -->
 		<property name="sqlSessionFactoryBeanName" value="sqlSessionFactory"></property>
 	</bean>
 
@@ -53,5 +61,4 @@
 		class="org.springframework.jdbc.datasource.DataSourceTransactionManager">
 		<property name="dataSource" ref="dataSource" />
 	</bean>
-
 </beans>  
