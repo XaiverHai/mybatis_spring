@@ -2,8 +2,7 @@
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
 <html>
 <head>
-<title>测试</title>
+<title>Result</title>
 </head>
-
-<body>${login}</body>
+<body>${result}</body>
 </html>

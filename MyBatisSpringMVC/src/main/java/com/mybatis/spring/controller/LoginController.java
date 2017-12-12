@@ -3,8 +3,6 @@ package com.mybatis.spring.controller;
 import java.io.IOException;
 
 import javax.servlet.ServletException;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.ComponentScan;
@@ -12,6 +10,7 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import com.mybatis.spring.pojo.Login;
 import com.mybatis.spring.service.impl.LoginServiceImpl;
@@ -31,14 +30,21 @@ public class LoginController {
 	 * @return
 	 * @throws IOException
 	 * @throws ServletException
+	 * @RequestParam 作用就是从网页里面获取相关字段
 	 */
-	@RequestMapping("/loginService")
-	public String loginInit(HttpServletResponse response, HttpServletRequest request, Model model)
+	@RequestMapping("/login")
+	public String loginInit(@RequestParam("username") String username, @RequestParam("password") String password,
+            Model model)
 			throws ServletException, IOException {
 		Login login = loginServiceImpl.selectByPrimaryKey(2);
-		model.addAttribute("login", login);
-		return "login";
-
+		if (username.equals("admin") && password.equals("admin")) {
+            model.addAttribute("result", login.toString());
+            return "result";
+        } else {
+            model.addAttribute("username", username);
+            return "loginfailed";
+        }
+		
 	}
 
 }

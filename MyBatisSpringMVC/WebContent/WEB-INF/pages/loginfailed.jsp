@@ -4,17 +4,8 @@
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
-<title>登录界面</title>
+<title>登录结果</title>
 </head>
-<body>
-	<center>
-		<form action="login" method="post">
-			username:<input type="text" name="username">
-			<p>
-				password:<input type="password" name="password">
-			<p>
-				<input type="submit" value="登录">
-		</form>
-	</center>
+<body>账号或者密码错误，请重新登录
 </body>
 </html>
