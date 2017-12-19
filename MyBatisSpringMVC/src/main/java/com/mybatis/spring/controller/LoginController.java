@@ -13,14 +13,14 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import com.mybatis.spring.pojo.Login;
-import com.mybatis.spring.service.impl.LoginServiceImpl;
+import com.mybatis.spring.service.IloginService;
 
 @Controller
 @Configuration
 @ComponentScan("com.mybatis.spring.controller") // No need to include component-scan in xml
 public class LoginController {
 	@Autowired
-	private LoginServiceImpl loginServiceImpl;
+	private ILoginService iloginService;
 
 	/**
 	 * 访问这个接口，需要传入参数：mobi，pwd（post方法） 返回登录信息：token
@@ -36,7 +36,7 @@ public class LoginController {
 	public String loginInit(@RequestParam("username") String username, @RequestParam("password") String password,
             Model model)
 			throws ServletException, IOException {
-		Login login = loginServiceImpl.selectByPrimaryKey(2);
+		Login login = iloginService.selectByPrimaryKey(2);
 		if (username.equals("admin") && password.equals("admin")) {
             model.addAttribute("result", login.toString());
             return "result";
